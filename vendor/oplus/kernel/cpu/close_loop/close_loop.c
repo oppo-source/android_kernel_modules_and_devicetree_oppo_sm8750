@@ -23,6 +23,9 @@ static int cl_glthread_usage;
 static int cl_flutter_usage;
 
 static int cl_aware_multi_enq = 1;
+static int cl_aware_multi_enq_ts = 100000000; /* 100 ms */
+static s64 cl_aware_multi_enq_ns;
+static int cl_main_enq;
 static int cl_split_usage;
 static int cl_float_usage;
 
@@ -396,9 +399,24 @@ static const struct proc_ops proc_active_fops = {
 	.proc_release = single_release,
 };
 
-void cl_chk_margin(s64 render_finish_ns) {
+void cl_enq_update(int pid) {
 	s64 now = ktime_get_ns();
-	s64 tmp = render_finish_ns;
+
+	if (!cl_enable)
+		return;
+
+	if (cl_aware_multi_enq) {
+		if (pid != cl_main_enq) {
+			/* pause for a while */
+			cl_aware_multi_enq_ns = now + cl_aware_multi_enq_ts;
+			cl_main_enq = pid;
+		}
+	}
+}
+EXPORT_SYMBOL_GPL(cl_enq_update);
+
+void cl_chk_margin(int pid) {
+	s64 now = ktime_get_ns();
 	s64 delta = 0;
 	int reason = CL_REASON_ACTIVE;
 
@@ -410,21 +428,20 @@ void cl_chk_margin(s64 render_finish_ns) {
 		return;
 	}
 
-	render_finish_ns = now;
-	delta = render_finish_ns - cl_td_prev_ns;
+	delta = now - cl_td_prev_ns;
 	active_acc_frame_cnt += 1;
 	active_acc_frame_duration += delta;
 	cl_adaptive_weight_ratio = delta * 100 / cl_td_period_ns;
 	cl_tp_int(CL_TP_WEIGHT_RATIO, cl_adaptive_weight_ratio, CL_TP_CRIT);
 
-	if (cl_td_next_ns - render_finish_ns < cl_td_period_ns * cl_frame_margin / 100) {
+	if (cl_td_next_ns - now < cl_td_period_ns * cl_frame_margin / 100) {
 		/* condition 1, remind margin large than margin_thres */
 		cl_update_active(0, now, CL_REASON_FRAME_MARGIN_BREAK);
 	} else if (now <= cl_aware_boost_ts + cl_aware_boost_hyst) {
 		cl_update_active(0, now, CL_REASON_AWARE_BOOST_BREAK);
 	} else if (cl_aware_usage && !cl_usage_chk()) {
 		cl_update_active(0, now, CL_REASON_AWARE_USAGE_BREAK);
-	} else if (cl_aware_multi_enq && (cl_split_usage || cl_float_usage)) {
+	} else if (cl_aware_multi_enq && (cl_split_usage || cl_float_usage || now < cl_aware_multi_enq_ns)) {
 		cl_update_active(0, now, CL_REASON_MULTI_ENQ_BREAK);
 	} else if (cl_aware_glthread && (cl_glthread_usage || cl_flutter_usage)) {
 		cl_update_active(0, now, CL_REASON_GLTHREAD_BREAK);
@@ -437,14 +454,16 @@ void cl_chk_margin(s64 render_finish_ns) {
 	}
 
 	if (cl_debug) {
-		pr_err("%s,%lld,%lld,%lld,%lld,%d,%d\n",
+		pr_err("%s,%d,%lld,%lld,%lld,%d,%lld,%d,%d\n",
 			__func__,
-			tmp,
-			render_finish_ns,
+			current->pid,
+			now,
 			cl_td_next_ns,
 			cl_td_period_ns,
 			cl_frame_margin,
-			reason);
+			cl_aware_multi_enq_ns,
+			reason,
+			cl_main_enq);
 	}
 
 	cl_trig_cpufreq_update(-1);
@@ -1068,6 +1087,7 @@ PROC_FOPS(cl_frame_margin);
 PROC_FOPS(cl_enable);
 PROC_FOPS(cl_tp_enable);
 PROC_FOPS(cl_aware_multi_enq);
+PROC_FOPS(cl_aware_multi_enq_ts);
 PROC_FOPS(cl_aware_glthread);
 PROC_FOPS(cl_adaptive_weight);
 PROC_FOPS(cl_adaptive_weight_max);
@@ -1125,6 +1145,7 @@ void cl_init(struct proc_dir_entry *dir)
 	PROC_CREATE("cl_enable", 0666, dir, cl_enable);
 	PROC_CREATE("cl_tp_enable", 0664, dir, cl_tp_enable);
 	PROC_CREATE("cl_aware_multi_enq", 0664, dir, cl_aware_multi_enq);
+	PROC_CREATE("cl_aware_multi_enq_ts", 0664, dir, cl_aware_multi_enq_ts);
 	PROC_CREATE("cl_aware_glthread", 0664, dir, cl_aware_glthread);
 	PROC_CREATE("cl_adaptive_weight", 0664, dir, cl_adaptive_weight);
 	PROC_CREATE("cl_adaptive_weight_max", 0664, dir, cl_adaptive_weight_max);

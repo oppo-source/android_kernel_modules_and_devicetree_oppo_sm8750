@@ -132,7 +132,8 @@ struct cl_accumulate {
 extern unsigned long cl_util(int cpu, unsigned long orig, bool ed_active);
 extern unsigned long cl_boost_util(int cpu, unsigned long orig, bool ed_active);
 extern struct proc_dir_entry *cl_get_default_proc_dir_entry(void);
-extern void cl_chk_margin(s64 render_finish_ns);
+extern void cl_chk_margin(int pid);
 extern void cl_chk_td_period(bool from_app);
+extern void cl_enq_update(int pid);
 
 #endif /* __CLOSE_LOOP_H__ */

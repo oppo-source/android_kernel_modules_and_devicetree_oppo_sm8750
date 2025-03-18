@@ -149,6 +149,11 @@ static long ofb_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 			}
 			return 0;
 		}
+
+		if (data.stage == BOOST_RT_QBUF_END) {
+			if (frame_trace_enable)
+				cl_enq_update(data.pid);
+		}
 #endif
 
 		if ((data.pid != current->pid) && (data.tid != current->pid) &&
@@ -172,7 +177,7 @@ static long ofb_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 						f_systrace_c(fbg_ktime_get_ns(), "CL_DEBUG_FINISH");
 					}
 				}
-				cl_chk_margin(0);
+				cl_chk_margin(data.pid);
 			}
 		}
 #endif

@@ -1,0 +1,11 @@
+/dts-v1/;
+/plugin/;
+
+#include "niobe-hw-fence.dtsi"
+
+/ {
+	model = "Qualcomm Technologies, Inc. Niobe SoC";
+	compatible = "qcom,niobe";
+	qcom,msm-id = <629 0x10000>, <652 0x10000>;
+	qcom,board-id = <0 0>;
+};

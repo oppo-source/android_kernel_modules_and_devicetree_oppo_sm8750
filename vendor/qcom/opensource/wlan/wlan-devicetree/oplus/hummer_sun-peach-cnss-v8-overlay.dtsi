@@ -1,0 +1,28 @@
+/*
+ *   <author>     <data>      <desc>
+ *   LiFenfen   2024/09/09  , select BDF by device-tree , bug id 7902090
+ */
+
+#include <dt-bindings/interconnect/qcom,sun.h>
+#include "../sun-peach-cnss-v8.dts"
+
+&wlan_peach {
+	//#ifdef OPLUS_FEATURE_WIFI_POWER
+	vdd-wlan-ant-share-supply = <&L8B>;
+	qcom,vdd-wlan-ant-share-config = <2800000 2800000 0 0 1>;
+	//#endif /* OPLUS_FEATURE_WIFI_POWER */
+
+	oplus_bdf: oplus_bdf {
+		bdf_name = "bdwlan.elf";
+		project_type = "rfid";
+	};
+};
+
+&oplus_bdf {
+    rfid_6: rfid_6 {
+		bdf_name = "bdwlan1.elf";
+    };
+    rfid_12: rfid_12 {
+                bdf_name = "bdwlan1.elf";
+    };
+};

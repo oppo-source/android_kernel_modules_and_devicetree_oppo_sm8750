@@ -1,0 +1,181 @@
+&oplus_mms_gauge {
+	oplus_virtual_gauge: oplus,virtual_gauge {
+		compatible = "oplus,virtual_gauge";
+		oplus,gauge_ic = <&oplus_adsp_gauge &oplus_ext_gauge>;
+		oplus,gauge_ic_index = <0 1>;
+		oplus,gauge_ic_func_group = <&adsp_gauge_groups &bq27541_groups>;
+		oplus,batt_capacity_mah = <11740>;
+		oplus,ic_type = <OPLUS_CHG_IC_VIRTUAL_GAUGE>;
+		oplus,ic_index = <0>;
+	};
+};
+
+&oplus_chg_core {
+	oplus-gauge {
+		bq27541_groups: oplus,bq27541_groups {
+			functions = <
+					OPLUS_IC_FUNC_INIT
+					OPLUS_IC_FUNC_EXIT
+					OPLUS_IC_FUNC_REG_DUMP
+					OPLUS_IC_FUNC_SMT_TEST
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_VOL
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_MAX
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_MIN
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_CURR
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_TEMP
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_SOC
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_FCC
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_CC
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_RM
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_SOH
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_AUTH
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_HMAC
+					OPLUS_IC_FUNC_GAUGE_SET_BATT_FULL
+					OPLUS_IC_FUNC_GAUGE_UPDATE_DOD0
+					OPLUS_IC_FUNC_GAUGE_UPDATE_SOC_SMOOTH
+					OPLUS_IC_FUNC_GAUGE_GET_CB_STATUS
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_NUM
+					OPLUS_IC_FUNC_GAUGE_GET_DEVICE_TYPE
+					OPLUS_IC_FUNC_GAUGE_GET_DEVICE_TYPE_FOR_VOOC
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_FCC
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_FC
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_QM
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_PD
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_RCU
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_RCF
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_FCU
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_FCF
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_SOU
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_DO0
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_DOE
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_TRM
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_PC
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_QS
+					OPLUS_IC_FUNC_GAUGE_IS_SUSPEND
+					OPLUS_IC_FUNC_GAUGE_GET_BCC_PARMS
+					OPLUS_IC_FUNC_GAUGE_FASTCHG_UPDATE_BCC_PARMS
+					OPLUS_IC_FUNC_GAUGE_GET_PREV_BCC_PARMS
+					OPLUS_IC_FUNC_GAUGE_SET_BCC_PARMS
+					OPLUS_IC_FUNC_GAUGE_SET_PROTECT_CHECK
+					OPLUS_IC_FUNC_GAUGE_GET_AFI_UPDATE_DONE
+					OPLUS_IC_FUNC_GAUGE_CHECK_RESET
+					OPLUS_IC_FUNC_GAUGE_SET_RESET
+					OPLUS_IC_FUNC_GAUGE_GET_DEVICE_TYPE_FOR_BCC
+					OPLUS_IC_FUNC_GAUGE_GET_DOD0
+					OPLUS_IC_FUNC_GAUGE_GET_DOD0_PASSED_Q
+					OPLUS_IC_FUNC_GAUGE_GET_QMAX
+					OPLUS_IC_FUNC_GAUGE_GET_QMAX_PASSED_Q
+					OPLUS_IC_FUNC_GAUGE_GET_REG_INFO
+					OPLUS_IC_FUNC_GAUGE_GET_CALIB_TIME
+					OPLUS_IC_FUNC_GAUGE_GET_BATT_SN
+					OPLUS_IC_FUNC_GAUGE_GET_MANU_DATE
+					OPLUS_IC_FUNC_GAUGE_GET_FIRST_USAGE_DATE
+					OPLUS_IC_FUNC_GAUGE_SET_FIRST_USAGE_DATE
+					OPLUS_IC_FUNC_GAUGE_GET_UI_CC
+					OPLUS_IC_FUNC_GAUGE_SET_UI_CC
+					OPLUS_IC_FUNC_GAUGE_GET_UI_SOH
+					OPLUS_IC_FUNC_GAUGE_SET_UI_SOH
+					OPLUS_IC_FUNC_GAUGE_GET_USED_FLAG
+					OPLUS_IC_FUNC_GAUGE_SET_USED_FLAG
+					OPLUS_IC_FUNC_GAUGE_SET_CALIB_TIME
+					OPLUS_IC_FUNC_GAUGE_SET_LAST_CC
+					OPLUS_IC_FUNC_GAUGE_GET_LAST_CC
+			>;
+			virqs = <
+				OPLUS_IC_VIRQ_ERR
+				OPLUS_IC_VIRQ_OFFLINE
+				OPLUS_IC_VIRQ_RESUME
+			>;
+		};
+		adsp_gauge_groups: oplus,oplus_adsp_gauge_groups {
+			functions = <
+				OPLUS_IC_FUNC_INIT
+				OPLUS_IC_FUNC_EXIT
+				OPLUS_IC_FUNC_REG_DUMP
+				OPLUS_IC_FUNC_SMT_TEST
+				OPLUS_IC_FUNC_GAUGE_GET_SUBBOARD_TEMP
+			>;
+			virqs = <
+				OPLUS_IC_VIRQ_ERR
+			>;
+		};
+	};
+};
+
+&qupv3_hub_i2c1_pins {
+	qupv3_hub_i2c1_sda_active_oplus: qupv3_hub_i2c1_sda_active_oplus {
+		mux {
+			pins = "gpio66";
+			function = "i2chub0_se1_l0";
+		};
+
+		config {
+			pins = "gpio66";
+			drive-strength = <2>;
+			bias-pull-up;
+		};
+	};
+
+	qupv3_hub_i2c1_scl_active_oplus: qupv3_hub_i2c1_scl_active_oplus {
+		mux {
+			pins = "gpio67";
+			function = "i2chub0_se1_l1";
+		};
+
+		config {
+			pins = "gpio67";
+			drive-strength = <2>;
+			bias-pull-up;
+		};
+	};
+
+	qupv3_hub_i2c1_pulldown: qupv3_hub_i2c1_pulldown {
+		mux {
+			pins = "gpio66", "gpio67";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio66", "gpio67";
+			drive-strength = <2>;
+			bias-pull-down;
+			output-low;
+		};
+	};
+
+	qupv3_hub_i2c1_pullup: qupv3_hub_i2c1_pullup {
+		mux {
+			pins = "gpio66", "gpio67";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio66", "gpio67";
+			drive-strength = <2>;
+			bias-pull-up;
+			input-enable;
+		};
+	};
+};
+
+&qupv3_hub_i2c1 {
+	status = "ok";
+	qcom,clk-freq-out = <100000>;
+	pinctrl-names = "default", "sleep", "pulldown", "pullup";
+	pinctrl-0 = <&qupv3_hub_i2c1_sda_active_oplus>, <&qupv3_hub_i2c1_scl_active_oplus>;
+	pinctrl-1 = <&qupv3_hub_i2c1_sleep>;
+	pinctrl-2 = <&qupv3_hub_i2c1_pulldown>;
+	pinctrl-3 = <&qupv3_hub_i2c1_pullup>;
+
+	oplus_ext_gauge: bq27541-battery@55 {
+		status = "okay";
+		compatible = "oplus,bq27z561-battery";
+		reg = <0x55>;
+		oplus,ic_index = <0>;
+		oplus,ic_type = <OPLUS_CHG_IC_GAUGE>;
+		qcom,modify-soc-smooth;
+		qcom,modify-soc-calibration;
+		oplus,support_extern_cmd;
+		oplus,batt_num = <1>;
+	};
+};

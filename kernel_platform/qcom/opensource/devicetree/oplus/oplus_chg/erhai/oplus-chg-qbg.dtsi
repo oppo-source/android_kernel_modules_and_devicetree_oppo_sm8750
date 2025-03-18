@@ -1,0 +1,114 @@
+&oplus_mms_gauge {
+	oplus_virtual_gauge: oplus,virtual_gauge {
+		compatible = "oplus,virtual_gauge";
+		oplus,gauge_ic = <&oplus_adsp_gauge &maxim_encryption_gauge>;
+		oplus,gauge_ic_index = <0 1>;
+		oplus,gauge_ic_func_group = <&adsp_gauge_groups &maxim_encryption_gauge_groups>;
+		oplus,batt_capacity_mah = <11740>;
+		oplus,ic_type = <OPLUS_CHG_IC_VIRTUAL_GAUGE>;
+		oplus,ic_index = <0>;
+	};
+};
+
+&oplus_chg_core {
+	oplus-gauge {
+		adsp_gauge_groups: oplus,oplus_adsp_gauge_groups {
+			functions = <
+				OPLUS_IC_FUNC_INIT
+				OPLUS_IC_FUNC_EXIT
+				OPLUS_IC_FUNC_REG_DUMP
+				OPLUS_IC_FUNC_SMT_TEST
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_VOL
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_MAX
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_MIN
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_CURR
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_TEMP
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_SOC
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_FCC
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_CC
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_RM
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_SOH
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_HMAC
+				OPLUS_IC_FUNC_GAUGE_SET_BATT_FULL
+				OPLUS_IC_FUNC_GAUGE_UPDATE_DOD0
+				OPLUS_IC_FUNC_GAUGE_UPDATE_SOC_SMOOTH
+				OPLUS_IC_FUNC_GAUGE_GET_CB_STATUS
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_NUM
+				OPLUS_IC_FUNC_GAUGE_GET_DEVICE_TYPE
+				OPLUS_IC_FUNC_GAUGE_GET_DEVICE_TYPE_FOR_VOOC
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_FCC
+				OPLUS_IC_FUNC_GAUGE_UPDATE
+				OPLUS_IC_FUNC_GAUGE_IS_SUSPEND
+				OPLUS_IC_FUNC_GAUGE_GET_SUBBOARD_TEMP
+				OPLUS_IC_FUNC_GAUGE_GET_BCC_PARMS
+				OPLUS_IC_FUNC_GAUGE_GET_DEVICE_TYPE_FOR_BCC
+				OPLUS_IC_FUNC_GAUGE_GET_DOD0
+				OPLUS_IC_FUNC_GAUGE_GET_DOD0_PASSED_Q
+				OPLUS_IC_FUNC_GAUGE_GET_QMAX
+				OPLUS_IC_FUNC_GAUGE_GET_QMAX_PASSED_Q
+			>;
+			virqs = <
+				OPLUS_IC_VIRQ_ERR
+				OPLUS_IC_VIRQ_OFFLINE
+				OPLUS_IC_VIRQ_RESUME
+			>;
+		};
+
+		maxim_encryption_gauge_groups: oplus,maxim_encryption_gauge_groups {
+			functions = <
+				OPLUS_IC_FUNC_INIT
+				OPLUS_IC_FUNC_EXIT
+				OPLUS_IC_FUNC_GAUGE_GET_BATT_AUTH
+			>;
+			virqs = <
+				OPLUS_IC_VIRQ_ERR
+			>;
+		};
+	};
+};
+
+&tlmm {
+	maxim_active: maxim_active {
+		mux {
+			pins = "gpio60";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio60";
+			bias-pull-up;
+			drive-strength = <16>;
+		};
+	};
+};
+
+&soc {
+	maxim_encryption_gauge: maxim_gauge {
+		status = "ok";
+		compatible = "oplus-maxim";
+		pinctrl-names = "maxim_active";
+		pinctrl-0 = <&maxim_active>;
+		data-gpio = <&tlmm 60 0x00>;
+		gpio-addr-set-out = <0xf13c000>;
+		gpio-addr-set-in = <0xf13c000>;
+		gpio-addr-level_high = <0xf13c004>;
+		gpio-addr-level_low = <0xf13c004>;
+		gpio-addr-data-in = <0xf13c004>;
+		gpio-addr-offset = <0x0>;
+
+		gpio-set-out-val = <0x1bc3>;
+		gpio-set-in-val = <0x19c3>;
+		gpio_level_high_val = <0x3>;
+		gpio_level_low_val = <0x0>;
+
+		write_begin_low_level_time = <600>;
+		write_relese_ic_time = <6>;
+		oplus,maxim_romid_crc_support;
+
+		oplus,batt_info = /bits/ 8 <0x36 0x31 0x31 0x33 0x30 0x37 0x30 0x30 0x30 0x30 0x34 0x32
+		                            0x36 0x31 0x31 0x33 0x30 0x37 0x30 0x30 0x30 0x30 0x35 0x31>;
+
+		oplus,ic_type = <OPLUS_CHG_IC_GAUGE>;
+		oplus,ic_index = <1>;
+	};
+};

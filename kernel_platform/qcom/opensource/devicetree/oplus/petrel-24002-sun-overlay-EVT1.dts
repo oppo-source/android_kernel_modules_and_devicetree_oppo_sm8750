@@ -1,0 +1,323 @@
+/dts-v1/;
+/plugin/;
+#include <dt-bindings/oplus/hw-id.h>
+#include "../qcom/sun-mtp-v8-overlay.dts"
+#include "sun_overlay_common.dtsi"
+#include "oplus_nfc/petrel_nfc.dtsi"
+#include "petrel_overlay_common.dtsi"
+#include "oplus_misc/oplus-misc-24001.dtsi"
+#include "oplus_chg/oplus-chg-24001.dtsi"
+#include "oplus_chg/oplus-chg-24001-EVT1.dtsi"
+#include "tp/petrel-oplus-tp-24001.dtsi"
+#include "oplus_fp/oplus_fp_24001.dtsi"
+#include "sensor/petrel-sensor-24001.dtsi"
+#include "oplus_icc/petrel-icc.dtsi"
+#include <dt-bindings/regulator/qcom,rpmh-regulator-levels.h>
+
+/ {
+    model = "Qualcomm Technologies, Inc. Sun MTP,petrel";
+
+    oplus,project-id = <24002>;
+    oplus,hw-id = <OPLUS_EVT1>;
+};
+
+&tlmm {
+  //#ifdef OPLUS_FEATURE_RF_CABLE_DETECT
+  rf_cable0_active: rf_cable0_active {
+      mux {
+          pins = "gpio47";
+          function = "gpio";
+      };
+      config {
+          pins = "gpio47";
+          drive-strength = <2>;
+          input-enable;
+          bias-pull-up;
+      };
+  };
+  //#endif /* OPLUS_FEATURE_RF_CABLE_DETECT */
+};
+
+&soc {
+  //#ifdef OPLUS_FEATURE_ESIM
+  oplus-gpio {
+    compatible = "oplus,oplus-gpio";
+    pinctrl-names = "oplus_esim", "sim2_det_no_pull", "sim2_det_pull_high", "sim2_det_pull_low";
+    pinctrl-0 = <&esim_det_gpio &esim_en_gpio>;
+    pinctrl-1 = <&sim2_det_no_pull>;
+    pinctrl-2 = <&sim2_det_pull_high>;
+    pinctrl-3 = <&sim2_det_pull_low>;
+    oplus,oplus-esim-det = <&pm8550_gpios 11 GPIO_ACTIVE_LOW>;
+    oplus,oplus-esim-en = <&pmih010x_gpios 10 GPIO_ACTIVE_LOW>;
+    oplus,oplus-sim2-det = <&pm8550ve_d_gpios 4 0>;
+    oplus,uim-reset-pin = "modem_solution";
+  };
+  oplus_sim_detect {
+    compatible = "oplus, sim_detect";
+    Hw,sim_det = "modem_det";
+  };
+  //#endif /*OPLUS_FEATURE_ESIM*/
+  //#ifdef OPLUS_FEATURE_RF_CABLE_DETECT
+  oplus_rf_cable {
+      compatible = "oplus,rf_cable";
+      interrupt-parent = <&tlmm>;
+      rf_cable_support_num = <1>;
+      rf,cable0-gpio = <&tlmm 47 0>;
+      rf,cable-support-timer = <0>;
+      pinctrl-names = "rf_cable_active";
+      pinctrl-0 = <&rf_cable0_active>;
+  };
+  //#endif /* OPLUS_FEATURE_RF_CABLE_DETECT */
+};
+
+&pm8550_gpios {
+  esim_det_gpio: esim_det_gpio {
+      pins = "gpio11";
+      function = "normal";
+      bias-disable; /* NO pull */
+      qcom,drive-strength = <2>; /* 2 MA */
+      power-source = <2>; /* 1.2V */
+      output-high;
+  };
+};
+
+&pmih010x_gpios {
+  esim_en_gpio: esim_en_gpio {
+      pins = "gpio10";
+      function = "normal";
+      bias-disable; /* NO pull */
+      qcom,drive-strength = <2>; /* 2 MA */
+      power-source = <2>; /* 1.2V */
+      output-high;
+  };
+};
+
+&pm8550ve_d_gpios {
+    sim2_det_no_pull: sim2_det_no_pull {
+        pins = "gpio4";
+        function = "normal";
+        input-enable;
+        power-source = <1>;
+        bias-disable;
+    };
+
+    sim2_det_pull_high: sim2_det_pull_high {
+        pins = "gpio4";
+        function = "normal";
+        input-enable;
+        power-source = <1>;
+        bias-pull-up;
+    };
+
+    sim2_det_pull_low: sim2_det_pull_low {
+        pins = "gpio4";
+        function = "normal";
+        input-enable;
+        power-source = <1>;
+        bias-pull-down;
+    };
+
+//#ifdef OPLUS_FEATURE_R801_satellite
+    satellite_pa_pwr_on {
+        satellite_pa_pwr_on_default:satellite_pa_pwr_on_default {
+            pins = "gpio5";
+            function = "normal";
+            power-source = <0>;
+            output-low;
+            input-disable;
+        };
+    };
+};
+
+&tlmm {
+  satellite_wakeup_active: satellite_wakeup_active {
+    mux {
+      pins = "gpio60";
+      function = "gpio";
+    };
+    config {
+      pins = "gpio60";
+      drive-strength = <2>;
+      output-enable;
+      bias-pull-up;
+    };
+  };
+};
+
+&tlmm {
+  satellite_sleep_active: satellite_sleep_active {
+    mux {
+      pins = "gpio197";
+      function = "gpio";
+    };
+    config {
+      pins = "gpio197";
+      drive-strength = <2>;
+      input-enable;
+      bias-disable;
+      qcom,apps;
+    };
+  };
+};
+
+&tlmm {
+  satellite_ant2_active: satellite_ant2_active {
+    mux {
+      pins = "gpio120";
+      function = "gpio";
+    };
+    config {
+      pins = "gpio120";
+      drive-strength = <2>;
+      output-high;
+      bias-disable;
+    };
+  };
+};
+
+&tlmm {
+  satellite_rst_active: satellite_rst_active {
+    mux {
+      pins = "gpio100";
+      function = "gpio";
+    };
+    config {
+      pins = "gpio100";
+      drive-strength = <2>;
+      output-enable;
+      bias-pull-up;
+    };
+  };
+};
+
+&pm8550vs_j_gpios {
+    satellite_boot_mode_en {
+        satellite_boot_mode_en_default:satellite_boot_mode_en_default {
+            pins = "gpio5";
+            function = "normal";
+            power-source = <0>;
+            output-low;
+            input-disable;
+        };
+    };
+
+};
+
+&pm8550ve_f_gpios {
+    satellite_vcca_pwr_on {
+        satellite_vcca_pwr_on_default: satellite_vcca_pwr_on_default {
+            pins = "gpio5";
+            function = "normal";
+            power-source = <0>;
+            output-low;
+            input-disable;
+        };
+    };
+};
+
+&pm8550ve_g_gpios {
+    satellite_sim_switch_sel1 {
+        satellite_sim_switch_sel1_default: satellite_sim_switch_sel1_default {
+            pins = "gpio6";
+            function = "normal";
+            power-source = <0>;
+            output-low;
+            input-disable;
+        };
+    };
+};
+
+&apps_rsc_drv2 {
+
+    rpmh-regulator-ldob9 {
+        compatible = "qcom,rpmh-vrm-regulator";
+        qcom,resource-name = "ldob9";
+        qcom,regulator-type = "pmic5-ldo";
+        qcom,supported-modes =
+            <RPMH_REGULATOR_MODE_LPM
+             RPMH_REGULATOR_MODE_HPM>;
+        qcom,mode-threshold-currents = <0 10000>;
+
+        L9B: pm_humu_l9: regulator-pm-humu-l9 {
+            regulator-name = "pm_humu_l9";
+            qcom,set = <RPMH_REGULATOR_SET_ALL>;
+            regulator-min-microvolt = <2800000>;
+            regulator-max-microvolt = <2800000>;
+            qcom,init-voltage = <2800000>;
+            qcom,init-mode = <RPMH_REGULATOR_MODE_HPM>;
+        };
+    };
+
+    rpmh-regulator-ldob16 {
+        compatible = "qcom,rpmh-vrm-regulator";
+        qcom,resource-name = "ldob16";
+        qcom,regulator-type = "pmic5-ldo";
+        qcom,supported-modes =
+            <RPMH_REGULATOR_MODE_LPM
+             RPMH_REGULATOR_MODE_HPM>;
+        qcom,mode-threshold-currents = <0 10000>;
+
+        L16B: pm_humu_l16: regulator-pm-humu-l16 {
+            regulator-name = "pm_humu_l16";
+            qcom,set = <RPMH_REGULATOR_SET_ALL>;
+            regulator-min-microvolt = <3300000>;
+            regulator-max-microvolt = <3300000>;
+            qcom,init-voltage = <3300000>;
+            qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
+        };
+    };
+};
+
+&L2G {
+    regulator-max-microvolt = <1200000>;
+    qcom,init-voltage = <1200000>;
+};
+
+&L2G {
+    regulator-max-microvolt = <1200000>;
+    qcom,init-voltage = <1200000>;
+};
+
+&L11B {
+    regulator-min-microvolt = <1800000>;
+    regulator-max-microvolt = <1800000>;
+    qcom,init-voltage = <1800000>;
+};
+
+&L6B {
+    regulator-max-microvolt = <1800000>;
+    qcom,init-voltage = <1800000>;
+};
+
+&L7B {
+    regulator-max-microvolt = <1800000>;
+    qcom,init-voltage = <1800000>;
+};
+
+&qupv3_se15_4uart {
+    status = "ok";
+};
+
+&soc {
+  oplus_satellite {
+    compatible = "oplus,24002_R801_satellite";
+    satellite,rpc_vdd-supply = <&L2G>;
+    satellite,rpc_dvdd-supply = <&L11B>;
+    satellite,rpc_vcca-supply = <&pm_humu_l16>;
+    satellite,rpc_rfvdd-supply = <&pm_humu_l9>;
+    oplus,oplus-satellite-ant = <&pm8550ve_f_gpios 5 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-pa = <&pm8550ve_d_gpios 5 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-boot = <&pm8550vs_j_gpios 5 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-sim = <&pm8550ve_g_gpios 6 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-rst = <&tlmm 100 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-wakeup = <&tlmm 60 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-sleep = <&tlmm 197 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-ant2 = <&tlmm 120 1>;
+  };
+};
+//#endif /* OPLUS_FEATURE_R801_satellite */
+&soc {
+  oplus_kernel_state_monitor {
+    compatible = "oplus,kernel_state_monitor";
+  };
+};

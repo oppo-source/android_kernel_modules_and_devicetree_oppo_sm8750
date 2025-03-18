@@ -1,0 +1,171 @@
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/interconnect/qcom,sun.h>
+
+&tlmm {
+	qupv3_se8_2uart_tx_default: qupv3_se8_2uart_tx_default {
+		mux {
+			pins = "gpio2";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio2";
+			drive-strength = <8>;
+			bias-disable;
+		};
+	};
+
+	qupv3_se8_2uart_tx_active: qupv3_se8_2uart_tx_active {
+		mux {
+			pins = "gpio2";
+			function = "qup2_se0_l2";
+		};
+
+		config {
+			pins = "gpio2";
+			drive-strength = <8>;
+			bias-disable;
+		};
+	};
+};
+
+&qupv3_2 {
+	qupv3_se8_2uart: qcom,qup_uart@880000 {
+		compatible = "qcom,msm-geni-serial-hs";
+		reg = <0x880000 0x4000>;
+		reg-names = "se_phys";
+		interrupts-extended =
+		<&intc GIC_SPI 373 IRQ_TYPE_LEVEL_HIGH>,
+		<&tlmm 3 IRQ_TYPE_NONE>;
+		clock-names = "se-clk";
+		clocks = <&gcc GCC_QUPV3_WRAP2_S0_CLK>;
+		interconnect-names = "qup-core", "qup-config", "qup-memory";
+		interconnects =
+		<&clk_virt MASTER_QUP_CORE_2 &clk_virt SLAVE_QUP_CORE_2>,
+		<&gem_noc MASTER_APPSS_PROC &config_noc SLAVE_QUP_2>,
+		<&aggre2_noc MASTER_QUP_2 &mc_virt  SLAVE_EBI1>;
+		pinctrl-names = "default", "active", "sleep", "shutdown";
+		pinctrl-0 = <&qupv3_se8_2uart_tx_default>;
+		pinctrl-1 = <&qupv3_se8_2uart_tx_active>;
+		pinctrl-2 = <&qupv3_se8_2uart_tx_default>;
+		pinctrl-3 = <&qupv3_se8_2uart_tx_default>;
+		qcom,wakeup-byte = <0xFD>;
+		qcom,auto-suspend-disable;
+		status = "ok";
+	};
+};
+
+&tlmm {
+	uart_rx_set: uart_rx_set {
+		mux {
+			pins = "gpio3";
+			function = "qup2_se0_l3";
+		};
+
+		config {
+			pins = "gpio3";
+			drive-strength = <2>;
+			bias-disable;
+		};
+	};
+
+	uart_rx_clear: uart_rx_clear {
+		mux {
+			pins = "gpio3";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio3";
+			drive-strength = <2>;
+			input-enable;
+			bias-disable;
+		};
+	};
+
+	uart_wake_gpio: uart_wake_gpio {
+		mux {
+			pins = "gpio96";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio96";
+			drive-strength = <2>;
+			bias-pull-up;
+			input-enable;
+		};
+	};
+
+	pogo_power_enable: pogo_power_enable {
+		mux {
+			pins = "gpio85";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio85";
+			output-high;
+		};
+	};
+
+	pogo_power_disable: pogo_power_disable {
+		mux {
+			pins = "gpio85";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio85";
+			output-low;
+		};
+	};
+};
+
+&soc {
+	pogo_keyboard {
+		compatible = "tinno,pogo_keyboard";
+		status = "ok";
+
+		uart-tx-en-gpio = <&tlmm 83 0x00>;
+		uart-wake-gpio = <&tlmm 96 0x00>;
+
+		pinctrl-names = "default", "sleep", "uart_rx_set", "uart_rx_clear", "uart_wake_gpio", "pogo_power_enable", "pogo_power_disable";
+		pinctrl-0 = <&uart_rx_set>;
+		pinctrl-1 = <&uart_rx_set>;
+		pinctrl-2 = <&uart_rx_set>;
+		pinctrl-3 = <&uart_rx_clear>;
+		pinctrl-4 = <&uart_wake_gpio>;
+		pinctrl-5 = <&pogo_power_enable>;
+		pinctrl-6 = <&pogo_power_disable>;
+
+		tty-name-string = "ttyHS5";
+
+		pogopin-kb-fw-support;
+		pogopin-kb-ota-dfu;
+		/*dfu_fwinfo_start_addr*/
+		ota-customize-datas = <0x40>;
+		ota-firmware-name = "POGOPIN_KB.bin";
+
+		keyboard-name-strings-enc =
+			"Erhai 2KB(Pogo Pin)",
+			"Erhai 1KB CN(Pogo Pin)",
+			"Erhai 1KB EN(Pogo Pin)";
+		keyboard-ble-name-strings-enc =
+			"Erhai 2KB",
+			"Erhai 1KB CN",
+			"Erhai 1KB EN";
+
+		keyboard-name-strings =
+			"Erhai 2KB(Pogo Pin)",
+			"Erhai 1KB CN(Pogo Pin)",
+			"Erhai 1KB EN(Pogo Pin)";
+		keyboard-ble-name-strings =
+			"Erhai 2KB",
+			"Erhai 1KB CN",
+			"Erhai 1KB EN";
+
+		touchpad-xy-max = <2764 1630>;
+	};
+};

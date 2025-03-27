@@ -1,0 +1,226 @@
+#include "panel/dsi-panel-AC140-P-1-A0002-dsc-cmd.dtsi"
+#include "panel/dsi-panel-AC140-S-3-A0014-dsc-cmd.dtsi"
+
+&soc {
+	oplus,dsi-display-dev {
+		oplus,dsi-panel-primary = <
+			&dsi_vtdr6130_amoled_video
+			&dsi_panel_AC140_P_1_A0002_dsc_cmd
+		>;
+		oplus,dsi-panel-secondary = <
+			&dsi_vtdr6130_amoled_video
+			&dsi_panel_AC140_S_3_A0014_dsc_cmd
+		>;
+		oplus,dsi-panel-extended = <>;
+	};
+
+
+	oplus_petrel_dsi_panel_pwr_supply: oplus_petrel_dsi_panel_pwr_supply {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		qcom,panel-supply-entry@0 {
+			reg = <0>;
+			qcom,supply-name = "vddio";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <200000>;
+			qcom,supply-disable-load = <80>;
+			qcom,supply-post-on-sleep = <2>;
+			qcom,supply-pre-off-sleep = <15>;
+		};
+
+		qcom,panel-supply-entry@1 {
+			reg = <1>;
+			qcom,supply-name = "vci";
+			qcom,supply-min-voltage = <3100000>;
+			qcom,supply-max-voltage = <3100000>;
+			qcom,supply-enable-load = <10000>;
+			qcom,supply-disable-load = <0>;
+			qcom,supply-pre-on-sleep = <2>;
+			qcom,supply-post-on-sleep = <0>;
+			qcom,supply-pre-off-sleep = <5>;
+		};
+	};
+
+	oplus_petrel_sec_dsi_panel_pwr_supply: oplus_petrel_sec_dsi_panel_pwr_supply {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		qcom,panel-supply-entry@0 {
+			reg = <0>;
+			qcom,supply-name = "vddio";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <200000>;
+			qcom,supply-disable-load = <80>;
+			qcom,supply-post-on-sleep = <0>;
+			qcom,supply-pre-off-sleep = <10>;
+		};
+	};
+};
+
+&pm_humu_l13 {
+	regulator-min-microvolt = <3100000>;
+	regulator-max-microvolt = <3100000>;
+	qcom,init-voltage = <3100000>;
+};
+
+&dsi_panel_pwr_supply {
+	/delete-node/ qcom,panel-supply-entry@0;
+	/delete-node/ qcom,panel-supply-entry@1;
+	/delete-node/ qcom,panel-supply-entry@2;
+	/delete-node/ qcom,panel-supply-entry@3;
+};
+
+&sde_dsi1 {
+	pinctrl-names = "panel_active", "panel_suspend";
+	pinctrl-0 = <&oplus_sde_dsi1_active
+	             &sde_te1_active
+	             &oplus_sde_dp_active
+	             &oplus_sec_pmic_reset_active
+	             &oplus_sec_vci_en_active
+	             &dsi_pmic_active>;
+	pinctrl-1 = <&oplus_sde_dsi1_suspend
+	             &sde_te1_suspend
+	             &oplus_sde_dp_suspend
+	             &oplus_sec_pmic_reset_suspend
+	             &oplus_sec_vci_en_suspend
+	             &dsi_pmic_suspend>;
+};
+
+&dsi_vtdr6130_amoled_video {
+	qcom,platform-sec-reset-gpio = <&tlmm 112 0>;
+};
+
+&pmx_sde {
+	oplus_sde_dp_active: oplus_sde_dp_active {
+		mux {
+			pins = "gpio186";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio186";
+			drive-strength = <8>;   /* 8 mA */
+			bias-disable = <0>;   /* no pull */
+			qcom,apps;              /* enable EGPIO */
+		};
+	};
+
+	oplus_sde_dp_suspend: oplus_sde_dp_suspend {
+		mux {
+			pins = "gpio186";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio186";
+			drive-strength = <8>;   /* 8 mA */
+			bias-disable = <0>;   /* no pull */
+			qcom,apps;              /* enable EGPIO */
+		};
+	};
+
+	oplus_sde_dsi1_active: oplus_sde_dsi1_active {
+		mux {
+			pins = "gpio112";
+			function = "gpio";
+		};
+
+		config {
+				pins = "gpio112";
+				drive-strength = <8>;   /* 8 mA */
+				bias-disable = <0>;   /* no pull */
+		};
+	};
+
+	oplus_sde_dsi1_suspend: oplus_sde_dsi1_suspend {
+		mux {
+			pins = "gpio112";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio112";
+			drive-strength = <2>;   /* 2 mA */
+			bias-pull-down;         /* PULL DOWN */
+		};
+	};
+
+	oplus_sec_pmic_reset_active: oplus_sec_pmic_reset_active {
+		mux {
+			pins = "gpio6";
+		};
+
+		config {
+				pins = "gpio6";
+				drive-strength = <8>;   /* 8 mA */
+		};
+	};
+
+	oplus_sec_pmic_reset_suspend: oplus_sec_pmic_reset_suspend {
+		mux {
+			pins = "gpio6";
+		};
+
+		config {
+				pins = "gpio6";
+				drive-strength = <2>;   /* 2 mA */
+		};
+	};
+
+	oplus_sec_vci_en_active: oplus_sec_vci_en_active {
+		mux {
+			pins = "gpio153";
+		};
+
+		config {
+				pins = "gpio153";
+				drive-strength = <8>;   /* 8 mA */
+		};
+	};
+
+	oplus_sec_vci_en_suspend: oplus_sec_vci_en_suspend {
+		mux {
+			pins = "gpio153";
+		};
+
+		config {
+				pins = "gpio153";
+				drive-strength = <2>;   /* 2 mA */
+		};
+	};
+};
+
+&pm8550ve_f_gpios {
+	dsi_vddr_en_active: dsi_vddr_en_active {
+		pins = "gpio7";
+		function = "normal";
+		power-source = <1>; /* 1.8V */
+		bias-disable = <0>;   /* no pull */
+		drive-strength = <8>;  /* 8 mA */
+	};
+
+	dsi_vddr_en_suspend: dsi_vddr_en_suspend  {
+		pins = "gpio7";
+		function = "normal";
+		power-source = <1>; /* 1.8V */
+		bias-disable = <0>;   /* no pull */
+		drive-strength = <2>;  /* 2 mA */
+	};
+};
+
+&pm8550ve_g_gpios {
+	dsi_pmic_active: dsi_pmic_active {
+		pins = "gpio3";
+		power-source = <1>; /* 1.8V */
+		bias-disable = <0>;   /* no pull */
+	};
+
+	dsi_pmic_suspend: dsi_pmic_suspend  {
+		pins = "gpio3";
+		power-source = <1>; /* 1.8V */
+		bias-disable = <0>;   /* no pull */
+	};
+};

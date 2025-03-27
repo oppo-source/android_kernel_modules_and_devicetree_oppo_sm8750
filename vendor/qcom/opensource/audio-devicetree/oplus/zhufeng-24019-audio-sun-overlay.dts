@@ -1,0 +1,12 @@
+/dts-v1/;
+/plugin/;
+#include <dt-bindings/oplus/hw-id.h>
+#include "../sun-audio-mtp-nfc.dts"
+#include "sun-audio-overlay-common.dtsi"
+#include "zhufeng-24019-audio-sun-overlay.dtsi"
+
+/ {
+    model = "Qualcomm Technologies, Inc. Sun MTP,zhufeng";
+
+    oplus,project-id = <24018 24019>;
+};

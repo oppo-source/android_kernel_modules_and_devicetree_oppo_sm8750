@@ -1,0 +1,15 @@
+/*
+ *   <author>     <data>      <desc>
+ *   LiFenfen   2024/09/09  , select BDF by device-tree , bug id 7902090
+ */
+
+/dts-v1/;
+/plugin/;
+#include <dt-bindings/oplus/hw-id.h>
+#include "hummer_sun-peach-cnss-v8-overlay.dtsi"
+
+/ {
+	model = "Qualcomm Technologies, Inc. Sun SoCs, hummer";
+
+	oplus,project-id = <24811>;
+};

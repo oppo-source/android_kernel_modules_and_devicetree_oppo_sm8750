@@ -1,0 +1,20 @@
+/dts-v1/;
+/plugin/;
+#include <dt-bindings/oplus/hw-id.h>
+#include "../qcom/sun-mtp-v8-overlay.dts"
+#include "sun_overlay_common.dtsi"
+#include "zhufeng_overlay_common.dtsi"
+#include "oplus_misc/oplus-misc-24019.dtsi"
+#include "oplus_chg/oplus-chg-24019-preT0.dtsi"
+#include "tp/zhufeng-oplus-tp-24019.dtsi"
+#include "sensor/zhufeng-sensor-24019.dtsi"
+#include "oplus_uff/oplus-uff-24019.dtsi"
+#include "oplus_nfc/zhufeng_nfc.dtsi"
+#include "oplus_icc/zhufeng-icc.dtsi"
+
+/ {
+    model = "Qualcomm Technologies, Inc. Sun MTP,zhufeng";
+
+    oplus,project-id = <24019>;
+    oplus,hw-id = <OPLUS_PRE_T0>;
+};

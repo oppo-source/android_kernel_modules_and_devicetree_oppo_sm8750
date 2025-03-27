@@ -1,0 +1,51 @@
+package(
+    default_visibility = [
+        "//visibility:public",
+    ],
+)
+
+load("//build/kernel/kleaf:kernel.bzl", "ddk_headers")
+
+driver_includes = [
+    "camera_extension/include",
+    "camera_extension/cam_monitor",
+    "camera_extension/cam_utils",
+    "camera_extension/cam_sensor_module",
+    "camera_extension/cam_sensor_module/cam_actuator",
+    "camera_extension/cam_sensor_module/cam_eeprom",
+    "camera_extension/cam_sensor_module/cam_ois/BU24721",
+    "camera_extension/cam_sensor_module/cam_ois/DW9786",
+    "camera_extension/cam_sensor_module/cam_ois/SEM1217S",
+    "camera_extension/cam_sensor_module/cam_ois",
+    "camera_extension/cam_sensor_module/cam_sensor_io",
+    "camera_extension/cam_sensor_module/cam_sensor",
+    "camera_extension/cam_sensor_module/cam_tof/cam_tof8801/include",
+    "camera_extension/cam_sensor_module/cam_tof/cam_tof8801",
+    "camera_extension/cam_sensor_module/cam_tof/cam_tof8806/include",
+    "camera_extension/cam_sensor_module/cam_tof/cam_tof8806",
+    "camera_extension/cam_sensor_module/cam_tof/cam_tof_common",
+
+]
+
+ddk_headers(
+    name = "camera_extension_src_headers",
+    hdrs = [
+        "camera_extension/include/uapi/cam_extension_uapi.h",
+    ],
+    includes = driver_includes + [
+        ".",
+    ],
+)
+
+ddk_headers(
+    name = "camera_extension_headers",
+    hdrs  = [
+        ":camera_extension_src_headers",
+    ],
+    includes = [],
+)
+
+load(":camera_extension_modules.bzl", "define_camera_extension_modules")
+
+define_camera_extension_modules()
+

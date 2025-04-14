@@ -1,0 +1,20 @@
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/clock/qcom,gcc-sun.h>
+#include <dt-bindings/clock/qcom,camcc-sun.h>
+#include <dt-bindings/clock/qcom,cambistmclkcc-sun.h>
+#include <dt-bindings/interconnect/qcom,sun.h>
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/regulator/qcom,rpmh-regulator-levels.h>
+
+#include <dt-bindings/oplus/hw-id.h>
+#include "../sun-camera.dtsi"
+#include "zhufeng_camera_overlay_common_EVT.dtsi"
+#include "zhufeng_actuator_pid_settings.dtsi"
+/ {
+	model = "Qualcomm Technologies, Inc. Sun Zhufeng_EVT and Zhufeng_PVT";
+	compatible = "qcom,sun-mtp", "qcom,sun", "qcom,mtp";
+	oplus,project-id = <24019 24018>;
+	oplus,hw-id = <OPLUS_EVT1 OPLUS_EVT2 OPLUS_PVT1 OPLUS_PVT2 OPLUS_PVT3 OPLUS_MP1 OPLUS_MP2 OPLUS_MP3 OPLUS_MP4>;
+};

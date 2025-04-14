@@ -1,0 +1,223 @@
+&qupv3_se4_spi{
+	/delete-property/ pinctrl-0;
+	/delete-property/ pinctrl-1;
+	pinctrl-0 = <&qupv3_se4_spi_mosi_active>, <&qupv3_se4_spi_miso_active>,
+				<&qupv3_se4_spi_clk_active>, <&qupv3_se4_spi_cs_active>;
+	pinctrl-1 = <&qupv3_se4_spi_sleep>, <&qupv3_se4_spi_cs_sleep>;
+};
+
+&qupv3_se4_spi {
+	status = "ok";
+
+	goodix-berlin@0 {
+		status = "disabled";
+	};
+
+	nt36536@0 {
+		status = "ok";
+		compatible = "novatek,nf_nt36536";
+		reg = <0x0>;
+		chip-name = "NT36536";
+		spi-max-frequency = <12000000>; //4800000,9600000,15000000,19200000
+
+		/* Interrupt && Irq-gpio */
+		interrupt-parent = <&tlmm>;
+		interrupts = <162 0x2002>;
+
+		/* Other HW Resource */
+		irq-gpio = <&tlmm 162 0x2002>;
+		/* reset-gpio = <&tlmm 98 0x00>; */
+		cs-gpio = <&tlmm 51 0x00>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&ts_int_active>;
+
+		touchpanel,irq_need_dev_resume_time = <500>;
+		touchpanel,max-num-support = <10>;
+		touchpanel,tx-rx-num = <60 40>;
+		touchpanel,panel-coords = <24000 33920>;
+		touchpanel,display-coords = <2400 3392>;
+		touchpanel,touchmajor-limit = <0 60>;
+
+		touchpanel,pen-tx-rx-num = <12 8>;
+		touchpanel,doze-tx-num = <12>;
+		touchpanel,pen-panel-coords = <24000 33920>;
+		touchpanel,pen-max-pressure = <16384>;
+		touchpanel,pen-max-tilt = <60 60>;
+		touchpanel,msecs-to-jiffies-time = <100>;
+		touchpanel,smooth-level = <255 32 64 96 128 254>;
+		touchpanel,sensitive-level = <255 20 15 10 6 3>;
+		touchpanel,sensitive-level-charging = <255 30 20 15 9 6>;
+
+		panel_type = <15>;
+		// type of tp_dev ,TP-HUAXING = 15;
+		firmware_name = "0x2XN242CN00";
+		platform_support_project = <24924 24974 24926 24976>;
+		platform_support_project_dir = <24924 24924 24924 24924>;
+		platform_support_project_commandline = "default_commandline";
+
+		incell_screen;
+		//iovcc_shutdown_support;
+		fw_edge_limit_support;
+		black_gesture_support;
+		charger_pump_support;
+		esd_handle_support;
+		black_gesture_test_support;
+		game_switch_support;
+		noflash_support;
+		lcd_trigger_load_tp_fw_support;
+		smart_gesture_support;
+		pressure_report_support;
+		touchz_to_pressure_support;
+		pen_support;
+		waterproof_support;
+		irq_need_dev_resume_ok;
+		fw_update_app_support;
+		health_monitor_support;
+		fw_update_in_probe_with_headfile;
+		black_gesture_indep_support;
+		report_rate_limit;
+		tp_scene_para_switch_support;
+
+		/*
+		 *Virtual Key Config:
+		 *1:touchpanel,button-type: <virtualkey_type  supportted_button-map>
+		 *virtualkey_type:
+		 *Type 1: using board_properties
+		 *Type 2: using same IC (button zone&& touch zone are seprate)
+		 *Type 3: using diffrent IC (button zone&& touch zone are seprate)
+		 *Type 4: No need of virtual key process
+		 *supportted_button-map:select|menu|home|back
+		 *
+		 *2:touchpanel,button-map
+		 *type (X1,Y1)(X2,Y2)(X3,Y3)(Width_X,Hight_Y)--Only when button-type is 0
+		 */
+		touchpanel,button-type = <4>;
+		touchpanel.button-TRx = <0 0>;
+	};
+};
+#include "erhai-oplus-tp_firmware_nt36536.dtsi"
+
+&tlmm {
+	gpio_wakeup: gpio_wakeup {
+		compatible = "gpio_wakeup";
+		gpio_table = <8 11 15 20 23 56 57 59 63 65 66 77 81 84 153 155 171 172 177 188 195>;
+	};
+
+	pmx_ts_int_active {
+		ts_int_active: ts_int_active {
+			mux {
+				pins = "gpio162";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio162";
+				drive-strength = <8>;
+				bias-disable;
+				input-enable;
+			};
+		};
+	};
+
+	/*
+	pmx_ts_reset_active {
+		ts_reset_active: ts_reset_active {
+			mux {
+				pins = "gpio98";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio98";
+				drive-strength = <8>;
+				output-low;
+				bias-disable;
+			};
+		};
+	};
+	*/
+
+	qupv3_se4_spi_pins: qupv3_se4_spi_pins {
+		qupv3_se4_spi_miso_active: qupv3_se4_spi_miso_active {
+			mux {
+				pins = "gpio48";
+				function = "qup1_se4_l0";
+			};
+
+			config {
+				pins = "gpio48";
+				drive-strength = <6>;
+				bias-disable;
+			};
+		};
+
+		qupv3_se4_spi_mosi_active: qupv3_se4_spi_mosi_active {
+			mux {
+				pins = "gpio49";
+				function = "qup1_se4_l1";
+			};
+
+			config {
+				pins = "gpio49";
+				drive-strength = <4>;
+				bias-disable;
+			};
+		};
+
+		qupv3_se4_spi_clk_active: qupv3_se4_spi_clk_active {
+			mux {
+				pins = "gpio50";
+				function = "qup1_se4_l2";
+			};
+
+			config {
+				pins = "gpio50";
+				drive-strength = <6>;
+				bias-disable;
+			};
+		};
+
+		qupv3_se4_spi_cs_active: qupv3_se4_spi_cs_active {
+			mux {
+				pins = "gpio51";
+				function = "qup1_se4_l3";
+			};
+
+			config {
+				pins = "gpio51";
+				drive-strength = <4>;
+				bias-disable;
+			};
+		};
+
+		qupv3_se4_spi_sleep: qupv3_se4_spi_sleep {
+			mux {
+				pins = "gpio48", "gpio49",
+						"gpio50";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio48", "gpio49",
+						"gpio50";
+				drive-strength = <4>;
+				bias-disable;
+			};
+		};
+
+		qupv3_se4_spi_cs_sleep: qupv3_se4_spi_cs_sleep {
+			mux {
+				pins = "gpio51";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio51";
+				drive-strength = <4>;
+				bias-disable;
+				output-high;
+			};
+		};
+	};
+};
+

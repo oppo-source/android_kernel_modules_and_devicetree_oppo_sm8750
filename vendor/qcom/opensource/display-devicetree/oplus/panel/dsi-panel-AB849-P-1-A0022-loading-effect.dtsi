@@ -1,0 +1,54 @@
+/***************************************************************
+** Copyright (C), 2024, OPLUS Mobile Comm Corp., Ltd
+**
+** Description : Display effect common config
+** Version : 1.0
+** Date : 2024/10/08
+******************************************************************/
+				qcom,mdss-dsi-loading-effect-1-command = [
+					/* Laoding On 100% */
+					39 00 00 40 00 00 03 F0 5A 5A
+					39 00 00 40 00 00 04 B0 00 02 C5
+					39 00 00 40 00 00 02 C5 27
+					39 00 00 40 00 00 04 B0 00 1B B1
+					39 00 00 40 00 00 0F B1 72 92 2B 6D 80 CE A5 D6 AB FF 10 00 00 01
+					39 00 00 40 00 00 04 B0 00 20 B1
+					39 00 00 40 00 00 05 B1 00 00 00 00
+					39 00 00 40 00 00 02 F7 0F
+					39 00 00 40 00 00 03 F0 A5 A5
+				];
+				qcom,mdss-dsi-loading-effect-2-command = [
+					/* Laoding On 110% */
+					39 00 00 40 00 00 03 F0 5A 5A
+					39 00 00 40 00 00 04 B0 00 02 C5
+					39 00 00 40 00 00 02 C5 27
+					39 00 00 40 00 00 04 B0 00 1B B1
+					39 00 00 40 00 00 0F B1 72 92 2B 6D 80 CE A5 D6 AB FF 10 00 00 01
+					39 00 00 40 00 00 04 B0 00 20 B1
+					39 00 00 40 00 00 05 B1 73 5C D6 AB
+					39 00 00 40 00 00 02 F7 0F
+					39 00 00 40 00 00 03 F0 A5 A5
+				];
+				qcom,mdss-dsi-loading-effect-3-command = [
+				];
+				qcom,mdss-dsi-loading-effect-4-command = [
+				];
+				qcom,mdss-dsi-loading-effect-off-command = [
+					/* Laoding On 120% */
+					39 00 00 40 00 00 03 F0 5A 5A
+					39 00 00 40 00 00 04 B0 00 02 C5
+					39 00 00 40 00 00 02 C5 27
+					39 00 00 40 00 00 04 B0 00 1B B1
+					39 00 00 40 00 00 0F B1 72 92 2B 6D 80 CE A5 D6 AB FF 10 00 00 01
+					39 00 00 40 00 00 04 B0 00 20 B1
+					39 00 00 40 00 00 05 B1 CE A5 D6 AB
+					39 00 00 40 00 00 02 F7 0F
+					39 00 00 40 00 00 03 F0 A5 A5
+				];
+
+				qcom,mdss-dsi-loading-effect-1-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-loading-effect-2-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-loading-effect-3-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-loading-effect-4-command-state = "dsi_hs_mode";
+				qcom,mdss-dsi-loading-effect-off-command-state = "dsi_hs_mode";
+

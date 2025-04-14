@@ -1,0 +1,116 @@
+/dts-v1/;
+/plugin/;
+#include <dt-bindings/oplus/hw-id.h>
+#include "../sun-audio-mtp-nfc.dts"
+#include "sun-audio-overlay-common.dtsi"
+#include "erhai-24924-audio-sun-overlay.dtsi"
+
+/ {
+    model = "Qualcomm Technologies, Inc. Sun MTP,erhai";
+
+    oplus,project-id = <24924 24926 24976>;
+    oplus,hw-id = <OPLUS_EVT1 OPLUS_EVT2 OPLUS_DVT1 OPLUS_DVT2 OPLUS_PVT1>;
+};
+
+&qupv3_hub_i2c4 {
+	status = "ok";
+	qcom,clk-freq-out = <400000>;
+	 /* AWINIC AW882XX mono Smart PA */
+	 aw882xx_smartpa@34 {
+		 compatible = "awinic,aw882xx_smartpa";
+		 reg = <0x34>;
+		 sync-load = <1>;
+		 sound-channel = <3>;
+		 aw-re-min = <6000>;
+		 aw-re-max = <8500>;
+		 aw-re-default = <7000>;
+		 //aw-f0-min = <800>;
+		 //aw-f0-max = <1100>;
+		 //aw-f0-default = <900>;
+		 //aw-cali-mode = "none";
+		 monitor-mode = "hal_monitor";
+		 status = "okay";
+	 };
+	 aw882xx_smartpa@35 {
+		 compatible = "awinic,aw882xx_smartpa";
+		 reg = <0x35>;
+		 sync-load = <1>;
+		 sound-channel = <1>;
+		 aw-re-min = <6000>;
+		 aw-re-max = <8500>;
+		 aw-re-default = <7000>;
+		 //aw-f0-min = <800>;
+		 //aw-f0-max = <1100>;
+		 //aw-f0-default = <900>;
+		 //aw-cali-mode = "none";
+		 monitor-mode = "hal_monitor";
+		 status = "okay";
+	 };
+	 aw882xx_smartpa@36 {
+		 compatible = "awinic,aw882xx_smartpa";
+		 reg = <0x36>;
+		 sync-load = <1>;
+		 sound-channel = <5>;
+		 aw-re-min = <6000>;
+		 aw-re-max = <8500>;
+		 aw-re-default = <7000>;
+		 //aw-f0-min = <800>;
+		 //aw-f0-max = <1100>;
+		 //aw-f0-default = <900>;
+		 //aw-cali-mode = "none";
+		 monitor-mode = "hal_monitor";
+		 status = "okay";
+	 };
+};
+
+
+&qupv3_hub_i2c9 {
+	status = "ok";
+	qcom,clk-freq-out = <400000>;
+	 /* AWINIC AW882XX mono Smart PA */
+	 aw882xx_smartpa@34 {
+		 compatible = "awinic,aw882xx_smartpa";
+		 reg = <0x34>;
+		 sync-load = <1>;
+		 sound-channel = <0>;
+		 aw-re-min = <6000>;
+		 aw-re-max = <8500>;
+		 aw-re-default = <7000>;
+		 //aw-f0-min = <800>;
+		 //aw-f0-max = <1100>;
+		 //aw-f0-default = <900>;
+		 //aw-cali-mode = "none";
+		 monitor-mode = "hal_monitor";
+		 status = "okay";
+	 };
+	 aw882xx_smartpa@35 {
+		 compatible = "awinic,aw882xx_smartpa";
+		 reg = <0x35>;
+		 sync-load = <1>;
+		 sound-channel = <2>;
+		 aw-re-min = <6000>;
+		 aw-re-max = <8500>;
+		 aw-re-default = <7000>;
+		 //aw-f0-min = <800>;
+		 //aw-f0-max = <1100>;
+		 //aw-f0-default = <900>;
+		 //aw-cali-mode = "none";
+		 monitor-mode = "hal_monitor";
+		 status = "okay";
+	 };
+	 aw882xx_smartpa@36 {
+		 compatible = "awinic,aw882xx_smartpa";
+		 reg = <0x36>;
+		 sync-load = <1>;
+		 sound-channel = <6>;
+		 aw-re-min = <6000>;
+		 aw-re-max = <8500>;
+		 aw-re-default = <7000>;
+		 //aw-f0-min = <800>;
+		 //aw-f0-max = <1100>;
+		 //aw-f0-default = <900>;
+		 //aw-cali-mode = "none";
+		 monitor-mode = "hal_monitor";
+		 status = "okay";
+	 };
+};

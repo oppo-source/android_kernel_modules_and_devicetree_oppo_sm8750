@@ -1,0 +1,21 @@
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/clock/qcom,gcc-sun.h>
+#include <dt-bindings/clock/qcom,camcc-sun.h>
+#include <dt-bindings/clock/qcom,cambistmclkcc-sun.h>
+#include <dt-bindings/interconnect/qcom,sun.h>
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/regulator/qcom,rpmh-regulator-levels.h>
+
+#include <dt-bindings/oplus/hw-id.h>
+#include "../sun-camera.dtsi"
+#include "petrel_camera_overlay_common_T0.dtsi"
+#include "petrel_actuator_pid_settings.dtsi"
+/ {
+	model = "Qualcomm Technologies, Inc. Sun Petrel_T0";
+	compatible = "qcom,sun-mtp", "qcom,sun", "qcom,mtp";
+	oplus,project-id = <24001 24002 24201 24861>;
+	oplus,hw-id = <OPLUS_T0 OPLUS_EVT1 OPLUS_EVT2 OPLUS_DVT1 OPLUS_DVT2 OPLUS_PVT1>;
+};
+

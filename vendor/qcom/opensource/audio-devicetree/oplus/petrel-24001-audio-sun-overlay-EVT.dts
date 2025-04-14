@@ -1,0 +1,71 @@
+/dts-v1/;
+/plugin/;
+#include <dt-bindings/oplus/hw-id.h>
+#include "../sun-audio-mtp-nfc.dts"
+#include "sun-audio-overlay-common.dtsi"
+#include "petrel-24001-audio-sun-overlay.dtsi"
+
+/ {
+	model = "Qualcomm Technologies, Inc. Sun MTP,petrel";
+
+	oplus,project-id = <24001 24002 24201 24861>;
+	oplus,hw-id = <OPLUS_EVB1 OPLUS_EVB2 OPLUS_EVB3 OPLUS_T0 OPLUS_EVT1 OPLUS_EVT2>;
+};
+
+&qupv3_hub_i2c9 {
+	status = "ok";
+	qcom,clk-freq-out = <400000>;
+
+	aw882xx_smartpa@34 {
+		compatible = "awinic,aw882xx_smartpa";
+		reg = <0x34>;
+		reset-gpio = <&tlmm 2 0>;
+		sync-load = <1>;
+		sound-channel = <1>;
+		aw-re-min = <5000>;
+		aw-re-max = <8000>;
+		aw-re-default = <6200>;
+		aw-f0-min = <500>;
+		aw-f0-max = <1500>;
+		aw-f0-default = <830>;
+		monitor-mode = "hal_monitor";
+		f0-enable = <1>;
+		status = "okay";
+		sync-flag = <1>;
+		fpga-check-enable = <1>;
+	};
+
+	aw882xx_smartpa@35 {
+		compatible = "awinic,aw882xx_smartpa";
+		reg = <0x35>;
+		reset-gpio = <&tlmm 164 0>;
+		sync-load = <1>;
+		sound-channel = <0>;
+		aw-re-min = <5000>;
+		aw-re-max = <8000>;
+		aw-re-default = <6200>;
+		aw-f0-min = <500>;
+		aw-f0-max = <1500>;
+		aw-f0-default = <750>;
+		monitor-mode = "hal_monitor";
+		f0-enable = <1>;
+		status = "okay";
+		sync-flag = <1>;
+		fpga-check-enable = <1>;
+	};
+};
+
+&oplus_audio_drv {
+	compatible = "oplus,asoc-audio";
+	//for aw882xx speaker
+	oplus,speaker-vendor = "aw882xx";
+	oplus,config-path = "aw";
+	oplus,speaker-i2s-id = <1>;
+	oplus,speaker-codec-name = "aw882xx_smartpa.4-0034", "aw882xx_smartpa.4-0035";
+	oplus,speaker-codec-dai-name = "aw882xx-aif-4-34", "aw882xx-aif-4-35";
+};
+
+&sun_snd {
+	oplus,dmic-micb-supply = <&BOB2>;
+	oplus,dmic-micb-voltage = <2720000 3000000>;
+};

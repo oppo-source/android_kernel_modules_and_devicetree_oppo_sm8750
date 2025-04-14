@@ -1,0 +1,160 @@
+#include "panel/dsi-panel-caihong-csot-nt36532-2120-3000-dual-dsc-144Hz-vid.dtsi"
+#include "panel/dsi_panel_XN242_P_D_A0024_dsc_vid.dtsi"
+#include "../display/dsi-panel-vtdr6130-dsc-fhd-plus-video.dtsi"
+
+&soc {
+	oplus,dsi-display-dev {
+		oplus,dsi-panel-primary = <
+			&dsi_vtdr6130_amoled_video
+			&dsi_panel_XN242_P_D_A0024_vid
+			&dsi_panel_csot_nt36532_2120_3000_dual_dsc_144hz_vid
+		>;
+		oplus,dsi-panel-secondary = <
+		>;
+		oplus,dsi-panel-extended = <>;
+	};
+
+
+	oplus_dsi_panel_custom_pwr_supply: oplus_dsi_panel_custom_pwr_supply {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		qcom,panel-supply-entry@0 {
+			reg = <0>;
+			qcom,supply-name = "vddio";
+			qcom,supply-min-voltage = <1900000>;
+			qcom,supply-max-voltage = <1900000>;
+			qcom,supply-enable-load = <220000>;
+			qcom,supply-disable-load = <8000>;
+			qcom,supply-post-on-sleep = <2>;
+			qcom,supply-pre-off-sleep = <2>;
+		};
+	};
+};
+
+&sde_dsi {
+	pinctrl-names = "panel_active", "panel_suspend";
+	pinctrl-0 = <&sde_dsi_active
+				 &sde_te_active
+				 &sde_esync0_active
+				 &oplus_ktz8868_hw_active
+				 &oplus_ktz8868_enp_active
+				 &oplus_ktz8868_enn_active>;
+	pinctrl-1 = <&sde_dsi_suspend
+				 &sde_te_suspend
+				 &sde_esync0_suspend
+				 &oplus_ktz8868_hw_suspend
+				 &oplus_ktz8868_enp_suspend
+				 &oplus_ktz8868_enn_suspend>;
+};
+
+&tlmm {
+	oplus_ktz8868_hw_active: oplus_ktz8868_hw_active {
+		mux {
+			pins = "gpio15";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio15";
+			drive-strength = <8>;   /* 8 mA */
+			bias-pull-up;
+		};
+	};
+
+	oplus_ktz8868_hw_suspend: oplus_ktz8868_hw_suspend {
+		mux {
+			pins = "gpio15";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio15";
+			drive-strength = <8>;   /* 8 mA */
+			bias-pull-down;
+		};
+	};
+
+	oplus_ktz8868_enp_active: oplus_ktz8868_enp_active {
+		mux {
+			pins = "gpio111";
+			function = "gpio";
+		};
+
+		config {
+				pins = "gpio111";
+				drive-strength = <8>;   /* 8 mA */
+				bias-pull-up;
+		};
+	};
+
+	oplus_ktz8868_enp_suspend: oplus_ktz8868_enp_suspend {
+		mux {
+			pins = "gpio111";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio111";
+			drive-strength = <8>;   /* 8 mA */
+			bias-pull-down;
+		};
+	};
+
+	oplus_ktz8868_enn_active: oplus_ktz8868_enn_active {
+		mux {
+			pins = "gpio14";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio14";
+			drive-strength = <8>;   /* 8 mA */
+			bias-pull-up;
+		};
+	};
+
+	oplus_ktz8868_enn_suspend: oplus_ktz8868_enn_suspend {
+		mux {
+			pins = "gpio14";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio14";
+			drive-strength = <8>;   /* 8 mA */
+			bias-pull-down;
+		};
+	};
+};
+
+&dsi_panel_pwr_supply {
+	/delete-node/ qcom,panel-supply-entry@0;
+	/delete-node/ qcom,panel-supply-entry@1;
+	/delete-node/ qcom,panel-supply-entry@2;
+	/delete-node/ qcom,panel-supply-entry@3;
+};
+
+&dsi_vtdr6130_amoled_video {
+	oplus,bl-use-ktz8868-ic-ctrl;
+};
+&qupv3_se11_i2c {
+	status = "ok";
+	ktz8868@11 {
+		compatible = "ktz8868-i2c-salve";
+		reg = <0x11>;
+	};
+};
+
+&qupv3_hub_i2c0 {
+	status = "ok";
+	ktz8868@11 {
+		compatible = "ktz8868-i2c-master";
+		reg = <0x11>;
+		ktz8868_hw_en_gpio = <&tlmm 15 0>;
+		ktz8868_bais_enp_gpio = <&tlmm 111 0>;
+		ktz8868_bais_enn_gpio = <&tlmm 14 0>;
+	};
+};
+
+

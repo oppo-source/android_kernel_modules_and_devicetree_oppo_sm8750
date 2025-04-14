@@ -1,0 +1,101 @@
+&tlmm {
+	qupv3_se11_i2c_pins_oplus: qupv3_se11_i2c_pins_oplus {
+		qupv3_se11_i2c_sda_active_oplus: qupv3_se11_i2c_sda_active_oplus {
+			mux {
+				pins = "gpio12";
+				function = "qup2_se3_l0";
+			};
+
+			config {
+				pins = "gpio12";
+				drive-strength = <2>;
+				bias-pull-up;
+				//qcom,i2c_pull;
+			};
+		};
+
+		qupv3_se11_i2c_scl_active_oplus: qupv3_se11_i2c_scl_active_oplus {
+			mux {
+				pins = "gpio13";
+				function = "qup2_se3_l1";
+			};
+
+			config {
+				pins = "gpio13";
+				drive-strength = <2>;
+				bias-pull-up;
+				//qcom,i2c_pull;
+			};
+		};
+
+		qupv3_se11_i2c_sleep_oplus: qupv3_se11_i2c_sleep_oplus {
+			mux {
+				pins = "gpio12", "gpio13";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio12", "gpio13";
+				drive-strength = <2>;
+			};
+		};
+	};
+};
+
+&qupv3_se11_i2c{
+	/delete-property/ pinctrl-0;
+	/delete-property/ pinctrl-1;
+	pinctrl-0 = <&qupv3_se11_i2c_sda_active_oplus>, <&qupv3_se11_i2c_scl_active_oplus>;
+	pinctrl-1 = <&qupv3_se11_i2c_sleep_oplus>;
+};
+
+&tlmm {
+	qupv3_hub_i2c0_pins_oplus: qupv3_hub_i2c0_pins_oplus {
+		qupv3_hub_i2c0_sda_active_oplus: qupv3_hub_i2c0_sda_active_oplus {
+			mux {
+				pins = "gpio64";
+				function = "i2chub0_se0_l0";
+			};
+
+			config {
+				pins = "gpio64";
+				drive-strength = <2>;
+				bias-pull-up;
+				//qcom,i2c_pull;
+			};
+		};
+
+		qupv3_hub_i2c0_scl_active_oplus: qupv3_hub_i2c0_scl_active_oplus {
+			mux {
+				pins = "gpio65";
+				function = "i2chub0_se0_l1";
+			};
+
+			config {
+				pins = "gpio65";
+				drive-strength = <2>;
+				bias-pull-up;
+				//qcom,i2c_pull;
+			};
+		};
+
+		qupv3_hub_i2c0_sleep_oplus: qupv3_hub_i2c0_sleep_oplus {
+			mux {
+				pins = "gpio64", "gpio65";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio64", "gpio65";
+				drive-strength = <2>;
+			};
+		};
+	};
+};
+
+&qupv3_hub_i2c0{
+	/delete-property/ pinctrl-0;
+	/delete-property/ pinctrl-1;
+	pinctrl-0 = <&qupv3_hub_i2c0_sda_active_oplus>, <&qupv3_hub_i2c0_scl_active_oplus>;
+	pinctrl-1 = <&qupv3_hub_i2c0_sleep_oplus>;
+};

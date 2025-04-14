@@ -1,0 +1,206 @@
+/dts-v1/;
+/plugin/;
+#include <dt-bindings/oplus/hw-id.h>
+#include "../qcom/sun-mtp-v8-overlay.dts"
+#include "sun_overlay_common.dtsi"
+#include "zhufeng_overlay_common.dtsi"
+#include "oplus_misc/oplus-misc-24019.dtsi"
+#include "oplus_chg/oplus-chg-24019.dtsi"
+#include "tp/zhufeng-oplus-tp-24019.dtsi"
+#include "sensor/zhufeng-sensor-24019.dtsi"
+#include "oplus_uff/oplus-uff-24019.dtsi"
+#include "oplus_nfc/zhufeng_nfc.dtsi"
+#include "oplus_icc/zhufeng-icc.dtsi"
+#include <dt-bindings/regulator/qcom,rpmh-regulator-levels.h>
+
+/ {
+    model = "Qualcomm Technologies, Inc. Sun MTP,zhufeng";
+
+    oplus,project-id = <24018>;
+    oplus,hw-id = <OPLUS_EVB1 OPLUS_EVB2 OPLUS_EVB3 OPLUS_T0 OPLUS_EVT1 OPLUS_EVT2 OPLUS_DVT1 OPLUS_DVT2 OPLUS_PVT1>;
+};
+
+//#ifdef OPLUS_FEATURE_R801_satellite
+&pm8550ve_d_gpios {
+    satellite_pa_pwr_on {
+        satellite_pa_pwr_on_default:satellite_pa_pwr_on_default {
+            pins = "gpio5";
+            function = "normal";
+            power-source = <0>;
+            output-low;
+            input-disable;
+        };
+    };
+};
+
+&tlmm {
+  satellite_wakeup_active: satellite_wakeup_active {
+    mux {
+      pins = "gpio60";
+      function = "gpio";
+    };
+    config {
+      pins = "gpio60";
+      drive-strength = <2>;
+      output-enable;
+      bias-pull-up;
+    };
+  };
+};
+
+&tlmm {
+  satellite_sleep_active: satellite_sleep_active {
+    mux {
+      pins = "gpio177";
+      function = "gpio";
+    };
+    config {
+      pins = "gpio177";
+      drive-strength = <2>;
+      input-enable;
+      bias-disable;
+      qcom,apps;
+    };
+  };
+};
+
+&tlmm {
+  satellite_ant2_active: satellite_ant2_active {
+    mux {
+      pins = "gpio120";
+      function = "gpio";
+    };
+    config {
+      pins = "gpio120";
+      drive-strength = <2>;
+      output-high;
+      bias-disable;
+    };
+  };
+};
+
+&tlmm {
+  satellite_ant3_active: satellite_ant3_active {
+    mux {
+      pins = "gpio111";
+      function = "gpio";
+    };
+    config {
+      pins = "gpio111";
+      drive-strength = <2>;
+      output-high;
+      bias-disable;
+    };
+  };
+};
+
+&tlmm {
+  satellite_ant3_m_active: satellite_ant3_m_active {
+    mux {
+      pins = "gpio182";
+      function = "gpio";
+    };
+    config {
+      pins = "gpio182";
+      drive-strength = <2>;
+      output-high;
+      bias-disable;
+    };
+  };
+};
+
+&tlmm {
+  satellite_rst_active: satellite_rst_active {
+    mux {
+      pins = "gpio100";
+      function = "gpio";
+    };
+    config {
+      pins = "gpio100";
+      drive-strength = <2>;
+      output-enable;
+      bias-pull-up;
+    };
+  };
+};
+
+&pm8550vs_j_gpios {
+    satellite_boot_mode_en {
+        satellite_boot_mode_en_default:satellite_boot_mode_en_default {
+            pins = "gpio5";
+            function = "normal";
+            power-source = <0>;
+            output-low;
+            input-disable;
+        };
+    };
+
+};
+
+&pm8550ve_f_gpios {
+    satellite_vcca_pwr_on {
+        satellite_vcca_pwr_on_default: satellite_vcca_pwr_on_default {
+            pins = "gpio5";
+            function = "normal";
+            power-source = <0>;
+            output-low;
+            input-disable;
+        };
+    };
+};
+
+&pm8550ve_g_gpios {
+    satellite_sim_switch_sel1 {
+        satellite_sim_switch_sel1_default: satellite_sim_switch_sel1_default {
+            pins = "gpio6";
+            function = "normal";
+            power-source = <0>;
+            output-low;
+            input-disable;
+        };
+    };
+};
+
+&L2G {
+    regulator-max-microvolt = <1200000>;
+    qcom,init-voltage = <1200000>;
+};
+
+&L11B {
+    regulator-min-microvolt = <1900000>;
+    regulator-max-microvolt = <1900000>;
+    qcom,init-voltage = <1900000>;
+};
+
+&qupv3_se15_4uart {
+    status = "ok";
+};
+
+&soc {
+  oplus_satellite {
+    compatible = "oplus,24018_R801_satellite";
+    satellite,rpc_vdd-supply = <&L2G>;
+    satellite,rpc_dvdd-supply = <&L11B>;
+    oplus,oplus-satellite-vcca = <&pm8550ve_f_gpios 5 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-pa = <&pm8550ve_d_gpios 5 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-boot = <&pm8550vs_j_gpios 5 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-sim = <&pm8550ve_g_gpios 6 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-rst = <&tlmm 100 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-wakeup = <&tlmm 60 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-sleep = <&tlmm 177 GPIO_ACTIVE_LOW>;
+    oplus,oplus-satellite-ant2 = <&tlmm 120 1>;
+    oplus,oplus-satellite-ant3 = <&tlmm 111 1>;
+    oplus,oplus-satellite-ant3-m = <&tlmm 182 1>;
+  };
+};
+
+&qupv3_hub_i2c9 {
+    status = "ok";
+    rpc@75 {
+        compatible = "oplus,satellite_hl7603";
+        reg = <0x75>;
+        rm_name = "DCDC_HL7603";
+        oplus,hl7603_vout_voltage = <33>;
+    };
+};
+//#endif /* OPLUS_FEATURE_R801_satellite */

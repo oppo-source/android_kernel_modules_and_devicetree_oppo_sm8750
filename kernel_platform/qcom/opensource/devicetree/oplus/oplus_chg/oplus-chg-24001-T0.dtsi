@@ -1,0 +1,98 @@
+//ifdef OPLUS_FEATURE_CHG_BASIC
+&qupv3_hub_i2c8_sda_active {
+	mux {
+		pins = "gpio206";
+		function = "i2chub0_se8_l0";
+	};
+
+	config {
+		pins = "gpio206";
+		drive-strength = <2>;
+		bias-pull-up;
+		qcom,i2c_pull;
+	};
+};
+
+&qupv3_hub_i2c8_scl_active {
+	mux {
+		pins = "gpio207";
+		function = "i2chub0_se8_l1";
+	};
+
+	config {
+		pins = "gpio207";
+		drive-strength = <2>;
+		bias-pull-up;
+		qcom,i2c_pull;
+	};
+};
+
+&qupv3_hub_i2c1_sda_active {
+	mux {
+		pins = "gpio66";
+		function = "i2chub0_se1_l0";
+	};
+
+	config {
+		pins = "gpio66";
+		drive-strength = <2>;
+		bias-pull-up;
+		qcom,i2c_pull;
+	};
+};
+
+&qupv3_hub_i2c1_scl_active {
+	mux {
+		pins = "gpio67";
+		function = "i2chub0_se1_l1";
+	};
+
+	config {
+		pins = "gpio67";
+		drive-strength = <2>;
+		bias-pull-up;
+		qcom,i2c_pull;
+	};
+};
+
+&sy6603_pmos_en_gpio_active {
+	pins = "gpio11";
+	function = "normal";
+	bias-disable;
+	power-source = <1>;
+	output-high;
+	qcom,drive-strength = <3>;
+};
+
+&sy6603_pmos_en_gpio_sleep {
+	pins = "gpio11";
+	function = "normal";
+	bias-disable;
+	power-source = <1>;
+	output-low;
+	qcom,drive-strength = <3>;
+};
+
+&pm8550ve_i_gpios {
+	sy6603_en_gpio_active: sy6603_en_gpio_active {
+		pins = "gpio6";
+		function = "normal";
+		bias-disable;
+		power-source = <1>;
+		output-high;
+		qcom,drive-strength = <3>;
+	};
+	sy6603_en_gpio_sleep: sy6603_en_gpio_sleep {
+		pins = "gpio6";
+		function = "normal";
+		bias-disable;
+		power-source = <1>;
+		output-low;
+		qcom,drive-strength = <3>;
+	};
+};
+&oplus_sy6603_bal {
+	sy6603,en-gpio = <&pm8550ve_i_gpios 6 0x00>;
+	oplus,disbale_bal;
+};
+//#endif OPLUS_FEATURE_CHG_BASIC

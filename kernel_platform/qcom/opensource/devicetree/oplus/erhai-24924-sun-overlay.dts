@@ -1,0 +1,21 @@
+/dts-v1/;
+/plugin/;
+#include <dt-bindings/oplus/hw-id.h>
+#include "../qcom/sun-mtp-v8-overlay.dts"
+#include "sun_overlay_common.dtsi"
+#include "erhai_overlay_common.dtsi"
+#include "oplus_pogo_kb/erhai-oplus-pogopin-kb-24924.dtsi"
+#include "oplus_misc/oplus-misc-24924.dtsi"
+#include "tp/erhai-oplus-tp-24924.dtsi"
+#include "oplus_chg/erhai/oplus-chg-24924.dtsi"
+#include <dt-bindings/regulator/qcom,rpmh-regulator-levels.h>
+#include "sensor/erhai-sensor-24924.dtsi"
+
+/ {
+    model = "Qualcomm Technologies, Inc. Sun MTP,erhai";
+
+    oplus,project-id = <24924>;
+    oplus,hw-id = <OPLUS_PRE_T0 OPLUS_EVB1 OPLUS_EVB2 OPLUS_EVB3 OPLUS_T0 OPLUS_EVT1 OPLUS_EVT2>;
+    oplus,gauge-id = <1>;
+};
+

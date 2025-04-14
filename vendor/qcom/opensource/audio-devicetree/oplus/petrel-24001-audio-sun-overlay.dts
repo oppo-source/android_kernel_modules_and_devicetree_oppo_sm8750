@@ -1,0 +1,46 @@
+/dts-v1/;
+/plugin/;
+#include <dt-bindings/oplus/hw-id.h>
+#include "../sun-audio-mtp-nfc.dts"
+#include "sun-audio-overlay-common.dtsi"
+#include "petrel-24001-audio-sun-overlay.dtsi"
+
+/ {
+    model = "Qualcomm Technologies, Inc. Sun MTP,petrel";
+
+    oplus,project-id = <24001 24002 24201 24861>;
+    oplus,hw-id = <OPLUS_DVT1 OPLUS_DVT2 OPLUS_PVT1>;
+};
+
+&qupv3_hub_i2c9 {
+	status = "ok";
+	qcom,clk-freq-out = <400000>;
+	tfa98xx@34 {
+		compatible = "nxp,tfa98xx";
+		reg = <0x34>;
+		reset-gpio = <&tlmm 2 0x00>;
+		tfa9874_vdd-supply = <&L15B>;
+		tfa_min_range = <5100>;
+		tfa_max_range = <7300>;
+		tfa_default_mohm = <6000>;
+		tfa_channel = <1>;
+		is_use_freq = <1>;
+		reset-polarity = <0>;
+		status = "ok";
+		fpga-check-enable = <1>;
+	};
+	tfa98xx@35 {
+		compatible = "nxp,tfa98xx";
+		reg = <0x35>;
+		reset-gpio = <&tlmm 164 0x00>;
+		tfa9874_vdd-supply = <&L15B>;
+		tfa_min_range = <5100>;
+		tfa_max_range = <7300>;
+		tfa_default_mohm = <6000>;
+		tfa_channel = <0>;
+		is_use_freq = <1>;
+		reset-polarity = <0>;
+		status = "ok";
+		fpga-check-enable = <1>;
+	};
+};

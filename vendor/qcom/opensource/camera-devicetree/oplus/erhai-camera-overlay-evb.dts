@@ -1,0 +1,18 @@
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/clock/qcom,gcc-sun.h>
+#include <dt-bindings/clock/qcom,camcc-sun.h>
+#include <dt-bindings/clock/qcom,cambistmclkcc-sun.h>
+#include <dt-bindings/interconnect/qcom,sun.h>
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/regulator/qcom,rpmh-regulator-levels.h>
+
+#include <dt-bindings/oplus/hw-id.h>
+#include "../sun-camera.dtsi"
+#include "erhai_camera_overlay_common_evb.dtsi"
+/ {
+	model = "Qualcomm Technologies, Inc. Sun erhai_EVB";
+	compatible = "qcom,sun-mtp", "qcom,sun", "qcom,mtp";
+	oplus,project-id = <24924 24926 24976 24974>;
+};

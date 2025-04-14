@@ -1,0 +1,47 @@
+&pm8550_flash0 {
+	qcom,ires-ua = <5000>;
+};
+
+&pm8550_flash1 {
+	qcom,ires-ua = <5000>;
+};
+
+&pm8550_flash2 {
+	qcom,ires-ua = <5000>;
+};
+
+&pm8550_flash3 {
+	qcom,ires-ua = <5000>;
+};
+
+&pm8550_torch0 {
+	qcom,ires-ua = <5000>;
+};
+
+&pm8550_torch1 {
+	qcom,ires-ua = <5000>;
+};
+
+&pm8550_torch2 {
+	qcom,ires-ua = <5000>;
+};
+
+&pm8550_torch3 {
+	qcom,ires-ua = <5000>;
+};
+
+&soc {
+	//#ifdef OPLUS_FEATURE_THERMAL_HORAE
+	shell_front {
+		compatible = "oplus,shell-temp";
+	};
+
+	shell_frame {
+		compatible = "oplus,shell-temp";
+	};
+
+	shell_back {
+		compatible = "oplus,shell-temp";
+	};
+	//#endif /* OPLUS_FEATURE_THERMAL_HORAE */
+};

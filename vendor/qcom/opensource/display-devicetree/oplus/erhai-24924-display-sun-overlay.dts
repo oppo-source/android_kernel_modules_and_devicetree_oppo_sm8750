@@ -1,0 +1,20 @@
+/dts-v1/;
+/plugin/;
+#include <dt-bindings/oplus/hw-id.h>
+#include "../display/sun-sde-display-mtp-v8-overlay.dts"
+#include "sun-display-overlay-common.dtsi"
+#include "erhai-24924-display-sun-overlay.dtsi"
+
+/ {
+	model = "Qualcomm Technologies Inc. Sun MTP,erhai";
+
+	oplus,project-id = <24924 24974>;
+};
+
+&mdss_dsi_phy0 {
+	oplus,dsi-pll-ssc-disalbed;
+};
+
+&mdss_dsi_phy1 {
+	oplus,dsi-pll-ssc-disalbed;
+};

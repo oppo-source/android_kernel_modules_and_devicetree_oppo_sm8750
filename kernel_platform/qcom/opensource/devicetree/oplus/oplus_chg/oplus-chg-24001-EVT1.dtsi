@@ -1,0 +1,55 @@
+//ifdef OPLUS_FEATURE_CHG_BASIC
+&oplus_batt_bal {
+	oplus,bal-volt-diff-thr = <100 40 20 10 10 10>;
+	oplus,bal-fastchg-b2-to-b1-max-curr-thr = <2500>;
+};
+&oplus_sy6603_bal {
+	sy6603,min-iref = <200>;
+};
+
+&qupv3_hub_i2c1_sda_active {
+	mux {
+		pins = "gpio66";
+		function = "i2chub0_se1_l0";
+	};
+
+	config {
+		pins = "gpio66";
+		drive-strength = <2>;
+		bias-pull-up;
+		qcom,i2c_pull;
+	};
+};
+
+&qupv3_hub_i2c1_scl_active {
+	mux {
+		pins = "gpio67";
+		function = "i2chub0_se1_l1";
+	};
+
+	config {
+		pins = "gpio67";
+		drive-strength = <2>;
+		bias-pull-up;
+		qcom,i2c_pull;
+	};
+};
+
+&sy6603_pmos_en_gpio_sleep {
+	pins = "gpio11";
+	function = "normal";
+	bias-disable;
+	power-source = <1>;
+	output-low;
+	qcom,drive-strength = <3>;
+};
+
+&sy6603_pmos_en_gpio_active {
+	pins = "gpio11";
+	function = "normal";
+	bias-disable;
+	power-source = <1>;
+	output-high;
+	qcom,drive-strength = <3>;
+};
+//#endif OPLUS_FEATURE_CHG_BASIC

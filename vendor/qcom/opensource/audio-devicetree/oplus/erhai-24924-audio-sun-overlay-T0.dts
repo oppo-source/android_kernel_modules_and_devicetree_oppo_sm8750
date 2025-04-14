@@ -1,0 +1,212 @@
+/dts-v1/;
+/plugin/;
+#include <dt-bindings/oplus/hw-id.h>
+#include "../sun-audio-mtp-nfc.dts"
+#include "sun-audio-overlay-common.dtsi"
+#include "erhai-24924-audio-sun-overlay.dtsi"
+
+/ {
+    model = "Qualcomm Technologies, Inc. Sun MTP,erhai";
+
+    oplus,project-id = <24924 24926 24976>;
+    oplus,hw-id = <OPLUS_EVB1 OPLUS_EVB2 OPLUS_EVB3 OPLUS_T0>;
+};
+
+&tlmm {
+	sia91xx_gpio_rst: sia91xx_gpio_rst {
+		mux {
+			pins = "gpio164";
+			function = "gpio";
+		};
+		config {
+			pins = "gpio164";
+			dirve-strength = <6>;
+			bias-disable;
+		};
+	};
+};
+
+&soc {
+	oplus,audio-drv {
+		compatible = "oplus,asoc-audio";
+		//for sipa speaker
+		oplus,speaker-vendor = "sipa91xx";
+		oplus,config-path = "sia";
+		oplus,speaker-i2s-id = <1>;
+		oplus,speaker-codec-name = "sipa.4-006c", "sipa.4-006d", "sipa.4-006e","sipa.9-006c", "sipa.9-006d", "sipa.9-006e";
+		oplus,speaker-codec-dai-name = "sia91xx-aif-4-6c", "sia91xx-aif-4-6d", "sia91xx-aif-4-6e","sia91xx-aif-9-6c", "sia91xx-aif-9-6d", "sia91xx-aif-9-6e";
+	};
+
+	si_pa_One: si_pa_One {
+		compatible = "si,sia91xx";
+		si,si_pa_type = "sia9196";
+		si,si_pa_disable_pin = <0>;
+		oplus,shared_rst_pin = <1>;
+		si,si_pa_reset = <&tlmm 164 0>;
+		pinctrl-names = "si_pa_shared_rst_gpio";
+		pinctrl-0 = <&sia91xx_gpio_rst>;
+		si,is_digital_pa = <1>;
+		sipa_min_range = <5800>;
+		sipa_max_range = <7800>;
+		sipa_default_mohm = <6800>;
+		sipa_min_freq = <100>;
+		sipa_max_freq = <2000>;
+		is_use_freq = <1>;
+
+		channel_num = <0>;
+		channel_num_max = <8>;
+	};
+
+	si_pa_Two: si_pa_Two {
+		compatible = "si,sia91xx";
+		si,si_pa_type = "sia9196";
+		si,si_pa_disable_pin = <0>;
+		oplus,shared_rst_pin = <1>;
+		si,si_pa_reset = <&tlmm 164 0>;
+		pinctrl-names = "si_pa_shared_rst_gpio";
+		pinctrl-0 = <&sia91xx_gpio_rst>;
+		si,is_digital_pa = <1>;
+		sipa_min_range = <5800>;
+		sipa_max_range = <7800>;
+		sipa_default_mohm = <6800>;
+		sipa_min_freq = <100>;
+		sipa_max_freq = <2000>;
+		is_use_freq = <1>;
+
+		channel_num = <1>;
+		channel_num_max = <8>;
+	};
+
+	si_pa_Three: si_pa_Three {
+		compatible = "si,sia91xx";
+		si,si_pa_type = "sia9196";
+		si,si_pa_disable_pin = <0>;
+		oplus,shared_rst_pin = <1>;
+		si,si_pa_reset = <&tlmm 164 0>;
+		pinctrl-names = "si_pa_shared_rst_gpio";
+		pinctrl-0 = <&sia91xx_gpio_rst>;
+		si,is_digital_pa = <1>;
+		sipa_min_range = <5800>;
+		sipa_max_range = <7800>;
+		sipa_default_mohm = <6800>;
+		sipa_min_freq = <100>;
+		sipa_max_freq = <2000>;
+		is_use_freq = <1>;
+
+		channel_num = <2>;
+		channel_num_max = <8>;
+	};
+
+	si_pa_Four: si_pa_Four {
+		compatible = "si,sia91xx";
+		si,si_pa_type = "sia9196";
+		si,si_pa_disable_pin = <0>;
+		oplus,shared_rst_pin = <1>;
+		si,si_pa_reset = <&tlmm 164 0>;
+		pinctrl-names = "si_pa_shared_rst_gpio";
+		pinctrl-0 = <&sia91xx_gpio_rst>;
+		si,is_digital_pa = <1>;
+		sipa_min_range = <5800>;
+		sipa_max_range = <7800>;
+		sipa_default_mohm = <6800>;
+		sipa_min_freq = <100>;
+		sipa_max_freq = <2000>;
+		is_use_freq = <1>;
+
+		channel_num = <3>;
+		channel_num_max = <8>;
+	};
+
+	si_pa_Five: si_pa_Five {
+		compatible = "si,sia91xx";
+		si,si_pa_type = "sia9196";
+		si,si_pa_disable_pin = <0>;
+		oplus,shared_rst_pin = <1>;
+		si,si_pa_reset = <&tlmm 164 0>;
+		pinctrl-names = "si_pa_shared_rst_gpio";
+		pinctrl-0 = <&sia91xx_gpio_rst>;
+		si,is_digital_pa = <1>;
+		sipa_min_range = <5800>;
+		sipa_max_range = <7800>;
+		sipa_default_mohm = <6800>;
+		sipa_min_freq = <100>;
+		sipa_max_freq = <2000>;
+		is_use_freq = <1>;
+
+		channel_num = <4>;
+		channel_num_max = <8>;
+	};
+
+	si_pa_Six: si_pa_Six {
+		compatible = "si,sia91xx";
+		si,si_pa_type = "sia9196";
+		si,si_pa_disable_pin = <0>;
+		oplus,shared_rst_pin = <1>;
+		si,si_pa_reset = <&tlmm 164 0>;
+		pinctrl-names = "si_pa_shared_rst_gpio";
+		pinctrl-0 = <&sia91xx_gpio_rst>;
+		si,is_digital_pa = <1>;
+		sipa_min_range = <5800>;
+		sipa_max_range = <7800>;
+		sipa_default_mohm = <6800>;
+		sipa_min_freq = <100>;
+		sipa_max_freq = <2000>;
+		is_use_freq = <1>;
+
+		channel_num = <5>;
+		channel_num_max = <8>;
+	};
+};
+
+&qupv3_hub_i2c4 {
+	status = "ok";
+	qcom,clk-freq-out = <400000>;
+	sipa_i2c_Two: sipa_i2c_Two@6c{
+		compatible = "si,sia91xx-i2c";
+		reg = <0x6c>;
+		si,sipa-dev = <&si_pa_Two>;
+		sound-name-prefix = "SpkrTwo";
+		status = "ok";
+	};
+	sipa_i2c_Four: sipa_i2c_Four@6d{
+		compatible = "si,sia91xx-i2c";
+		reg = <0x6d>;
+		si,sipa-dev = <&si_pa_Four>;
+		sound-name-prefix = "SpkrFour";
+		status = "ok";
+	};
+	sipa_i2c_Six: sipa_i2c_Six@6e{
+		compatible = "si,sia91xx-i2c";
+		reg = <0x6e>;
+		si,sipa-dev = <&si_pa_Six>;
+		sound-name-prefix = "SpkrSix";
+		status = "ok";
+	};
+};
+
+
+&qupv3_hub_i2c9 {
+	status = "ok";
+	qcom,clk-freq-out = <400000>;
+	sipa_i2c_Three: sipa_i2c_Three@6c{
+		compatible = "si,sia91xx-i2c";
+		reg = <0x6c>;
+		si,sipa-dev = <&si_pa_Three>;
+		sound-name-prefix = "SpkrThree";
+		status = "ok";
+	};
+	sipa_i2c_One: sipa_i2c_One@6d{
+		compatible = "si,sia91xx-i2c";
+		reg = <0x6d>;
+		si,sipa-dev = <&si_pa_One>;
+		sound-name-prefix = "SpkrOne";
+		status = "ok";
+	};
+	sipa_i2c_Five: sipa_i2c_Five@6e{
+		compatible = "si,sia91xx-i2c";
+		reg = <0x6e>;
+		si,sipa-dev = <&si_pa_Five>;
+		sound-name-prefix = "SpkrFive";
+		status = "ok";
+	};
+};

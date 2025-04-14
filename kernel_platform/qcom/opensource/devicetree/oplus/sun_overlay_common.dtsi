@@ -1,0 +1,74 @@
+&soc {
+    bootloader_log {
+        compatible = "bootloader_log";
+        linux,contiguous-region = <&bootloader_log_mem>;
+    };
+
+    //#ifdef OPLUS_FEATURE_SECURITY_COMMON
+    /* 2024/04/09 add for oplus secure */
+    oplus_secure_common {
+        compatible = "oplus,secure_common";
+   };
+   //#endif /*OPLUS_FEATURE_SECURITY_COMMON*/
+
+    oplus-pmic-monitor-log {
+        compatible = "oplus,pmic-monitor-log";
+        nvmem = <&pmk8550_sdam_5>, <&pmk8550_sdam_6>;
+        nvmem-names = "pon_log0", "pon_log1";
+    };
+
+    oplus-ocp-state-log {
+        compatible = "oplus,pmic-ocp-log";
+        nvmem-cells = <&ocp_log>;
+        nvmem-cell-names = "ocp_log";
+    };
+    dump_device_info {
+        compatible = "dump_device_info";
+        linux,contiguous-region = <&dump_device_info_mem>;
+    };
+
+  oplus_kernel_state_monitor {
+    compatible = "oplus,kernel_state_monitor";
+  };
+};
+
+&reserved_memory {
+        /*
+        This size is from Core/Uefi/LAA/memmap.dtsi
+        reg = <0x0 0x81CE4000 0x0 0x00010000>;
+        MemLabel = "UEFI_Log";
+        so we reserve this for bootloader log
+        */
+        bootloader_log_mem: botloader_mem@0x81CE4000 {
+                reg = <0 0x81CE4000 0 0x00010000>;
+                label = "bootloader_log_mem";
+        };
+
+        dump_device_info_mem: device_info_mem@0xA4F00000 {
+                reg = <0 0xA4F00000 0 0x00008000>;
+                label = "dump_device_info_mem";
+        };
+};
+
+&pmk8550 {
+//#ifdef CONFIG_OPLUS_FEATURE_QCOM_PMICWD
+//pmicwd depend on pon_pbs@800
+        pon_pbs@800 {
+                compatible = "qcom,qpnp-power-on";
+                reg = <0x800>;
+                qcom,system-reset;
+                qcom,store-hard-reset-reason;
+        };
+
+        pon_pmicwd@800 {
+                compatible = "oplus,pmicwd_qpnp-power-on";
+                qcom,pmicwd;
+        };
+
+        oplus_ocp_dev: oplus-ocp-dev@8200 {
+        compatible = "oplus,pmic-ocp-device";
+        reg = <0x8200>;
+        oplus-ocp-device;
+        };
+//#endif /* CONFIG_OPLUS_FEATURE_QCOM_PMICWD */
+};

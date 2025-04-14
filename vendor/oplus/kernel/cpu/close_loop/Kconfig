@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0-only
+# Copyright (C) 2018-2020 Oplus. All rights reserved.
+
+config OPLUS_FEATURE_CPU_CLOSE_LOOP
+    tristate "close loop to reclaim over give performace"
+    default n
+    help
+     According to frame render process, take render finish to to if we can
+     have some performance back.
